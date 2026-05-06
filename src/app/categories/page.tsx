@@ -1,28 +1,23 @@
-import Link from "next/link";
-
+import { CategoryShowcase } from "@/components/category-showcase";
 import { getCategories } from "@/lib/data";
 
 export default async function CategoriesPage(): Promise<JSX.Element> {
-  const categories = await getCategories();
+  const categories = (await getCategories())
+    .slice()
+    .sort((a, b) => b.count - a.count);
   return (
-    <div className="space-y-6">
-      <header className="soft-card p-6">
-        <h1 className="text-4xl font-semibold tracking-tight">Categories</h1>
-        <p className="mt-2 text-sm text-muted">Browse peptides by research goal and mechanism.</p>
+    <div className="space-y-8">
+      <header className="space-y-2">
+        <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-accent-blue">
+          Therapeutic areas
+        </p>
+        <h1 className="text-4xl font-semibold tracking-tight md:text-5xl">Categories</h1>
+        <p className="max-w-2xl text-sm leading-relaxed text-muted">
+          Browse peptides by research goal and mechanism. Each category aggregates compounds
+          with shared targets, study profiles, and clinical maturity.
+        </p>
       </header>
-      <div className="grid gap-4 md:grid-cols-2">
-        {categories.map((category) => (
-          <Link
-            key={category.slug}
-            href={`/categories/${category.slug}`}
-            className="soft-card p-5 transition-colors hover:border-accent-blue"
-          >
-            <h2 className="text-2xl font-semibold tracking-tight">{category.name}</h2>
-            <p className="mt-2 text-sm text-muted">{category.description || "Category profile and included peptides."}</p>
-            <p className="mt-4 font-mono text-xs text-muted">{category.count} peptides</p>
-          </Link>
-        ))}
-      </div>
+      <CategoryShowcase categories={categories} />
     </div>
   );
 }

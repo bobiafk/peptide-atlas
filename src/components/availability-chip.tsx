@@ -8,11 +8,11 @@ const chipStyles = cva(
   {
     variants: {
       tone: {
-        research: "border-[#DCEBFF] bg-[#F2F8FF] text-[#0A84FF]",
-        prescription: "border-[#D6F4EB] bg-[#EEFBF7] text-[#0CA678]",
-        compoundable: "border-[#D7EFFB] bg-[#EFF8FD] text-[#1C7ED6]",
-        mixed: "border-[#ECDFFF] bg-[#F7F2FF] text-[#7048E8]",
-        cosmetic: "border-[#FFE8CC] bg-[#FFF5E8] text-[#E67700]",
+        research: "border-[#2c4f82] bg-[#0d1c38] text-[#9fc6ff]",
+        prescription: "border-[#2d625a] bg-[#0d2522] text-[#8ff5e3]",
+        compoundable: "border-[#335775] bg-[#0f2338] text-[#9ccfff]",
+        mixed: "border-[#4f3e88] bg-[#181d3a] text-[#c2b3ff]",
+        cosmetic: "border-[#705237] bg-[#2a2011] text-[#ffe2a4]",
       },
     },
   },

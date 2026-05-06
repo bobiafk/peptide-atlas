@@ -1,23 +1,26 @@
+import { FileText } from "lucide-react";
+
 import type { Study } from "@/lib/types";
 
 export function StudyCitation({ study }: { study: Study }): JSX.Element {
   return (
-    <article className="rounded-2xl border border-hairline bg-panel p-4 shadow-[0_8px_24px_rgba(11,65,125,0.06)]">
-      <h4 className="font-medium text-text">{study.title}</h4>
-      <p className="mt-1 text-sm text-muted">
-        {study.authors} · {study.journal} ({study.year})
-      </p>
-      <div className="mt-3 flex flex-wrap gap-2 text-xs">
-        {study.trialType ? (
-          <span className="rounded-full bg-panel-muted px-2 py-1 font-mono text-muted">{study.trialType}</span>
-        ) : null}
-        {study.phase ? (
-          <span className="rounded-full bg-panel-muted px-2 py-1 font-mono text-muted">{study.phase}</span>
-        ) : null}
-        {study.n ? <span className="rounded-full bg-panel-muted px-2 py-1 font-mono text-muted">n={study.n}</span> : null}
-        {study.weeks ? (
-          <span className="rounded-full bg-panel-muted px-2 py-1 font-mono text-muted">{study.weeks} weeks</span>
-        ) : null}
+    <article className="group rounded-2xl border border-hairline bg-panel p-5 transition hover:border-accent-blue/40">
+      <div className="flex items-start gap-3">
+        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-accent-blue/8 text-accent-blue">
+          <FileText className="h-4 w-4" strokeWidth={1.8} />
+        </span>
+        <div className="flex-1">
+          <h4 className="font-medium leading-snug text-text">{study.title}</h4>
+          <p className="mt-1 text-xs text-muted">
+            {study.authors} · <span className="italic">{study.journal}</span> ({study.year})
+          </p>
+        </div>
+      </div>
+      <div className="mt-3 flex flex-wrap gap-1.5">
+        {study.trialType ? <span className="stat-pill">{study.trialType}</span> : null}
+        {study.phase ? <span className="stat-pill is-violet">{study.phase}</span> : null}
+        {study.n ? <span className="stat-pill is-mint">n={study.n}</span> : null}
+        {study.weeks ? <span className="stat-pill is-amber">{study.weeks} wks</span> : null}
       </div>
       <p className="mt-3 text-sm leading-relaxed text-muted">{study.summary}</p>
     </article>

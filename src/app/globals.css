@@ -1,16 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #f5f7fa;
-  --panel: #ffffff;
-  --panel-muted: #f9fbff;
-  --text: #0a1b2a;
-  --muted: #5f6f85;
-  --hairline: #dce5f2;
-  --accent-blue: #0a84ff;
-  --accent-mint: #21c9a5;
-  --accent-coral: #ff7f7f;
-  --shadow-soft: 0 10px 30px rgba(11, 65, 125, 0.08);
+  --bg: #060b16;
+  --panel: #0d1426;
+  --panel-muted: #121c35;
+  --text: #e9f0ff;
+  --muted: #94a6c8;
+  --hairline: #1c2a4b;
+  --accent-blue: #6ea8ff;
+  --accent-violet: #9d85ff;
+  --accent-mint: #43d8c0;
+  --accent-coral: #ff8f9f;
+  --accent-amber: #ffcb6b;
+  --shadow-soft: 0 16px 40px rgba(0, 0, 0, 0.32);
+  --shadow-lift: 0 30px 70px -18px rgba(0, 0, 0, 0.55);
 }
 
 @theme inline {
@@ -21,8 +24,10 @@
   --color-muted: var(--muted);
   --color-hairline: var(--hairline);
   --color-accent-blue: var(--accent-blue);
+  --color-accent-violet: var(--accent-violet);
   --color-accent-mint: var(--accent-mint);
   --color-accent-coral: var(--accent-coral);
+  --color-accent-amber: var(--accent-amber);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-serif: var(--font-fraunces);
@@ -32,19 +37,168 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-geist-sans), sans-serif;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.75) 0.6px, transparent 0.6px);
-  background-size: 3px 3px;
+  background-image:
+    radial-gradient(circle at 18% -5%, rgba(89, 141, 255, 0.2), transparent 55%),
+    radial-gradient(circle at 82% -10%, rgba(157, 133, 255, 0.2), transparent 55%),
+    radial-gradient(circle at 50% 110%, rgba(67, 216, 192, 0.12), transparent 60%),
+    linear-gradient(180deg, #070d1b 0%, #040914 100%);
+  background-attachment: fixed;
 }
 
 .clinical-shell {
-  background:
-    radial-gradient(1000px 400px at 20% 0%, rgba(10, 132, 255, 0.11), transparent),
-    radial-gradient(1000px 400px at 80% 0%, rgba(33, 201, 165, 0.08), transparent);
+  position: relative;
+}
+
+.clinical-shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(rgba(173, 205, 255, 0.08) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse 70% 50% at 50% 0%, black 30%, transparent 80%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.clinical-shell > * {
+  position: relative;
+  z-index: 1;
 }
 
 .soft-card {
-  background: var(--panel);
-  border: 1px solid var(--hairline);
-  border-radius: 20px;
+  background: linear-gradient(160deg, rgba(18, 28, 53, 0.8) 0%, rgba(13, 20, 38, 0.9) 100%);
+  border: 1px solid rgba(110, 168, 255, 0.14);
+  border-radius: 24px;
   box-shadow: var(--shadow-soft);
+}
+
+.lift-card {
+  background: linear-gradient(160deg, rgba(18, 28, 53, 0.75) 0%, rgba(13, 20, 38, 0.92) 100%);
+  border: 1px solid rgba(110, 168, 255, 0.16);
+  border-radius: 24px;
+  box-shadow: var(--shadow-soft);
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    border-color 220ms ease;
+}
+
+.lift-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lift);
+  border-color: rgba(110, 168, 255, 0.45);
+}
+
+.hero-mesh {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0;
+  background:
+    radial-gradient(circle at 12% 20%, rgba(110, 168, 255, 0.3), transparent 45%),
+    radial-gradient(circle at 88% 12%, rgba(157, 133, 255, 0.32), transparent 50%),
+    radial-gradient(circle at 70% 92%, rgba(67, 216, 192, 0.24), transparent 50%),
+    radial-gradient(circle at 18% 88%, rgba(255, 203, 107, 0.16), transparent 40%),
+    linear-gradient(140deg, #0f1730 0%, #0a1226 60%, #0a1021 100%);
+  border: 0;
+  box-shadow: none;
+}
+
+.hero-mesh::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(207, 228, 255, 0.32) 0.6px, transparent 0.6px);
+  background-size: 4px 4px;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.glass-pill {
+  background: rgba(10, 17, 34, 0.58);
+  border: 1px solid rgba(130, 181, 255, 0.22);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.molecule-svg {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+.landing-canvas {
+  position: relative;
+  overflow: hidden;
+}
+
+.landing-canvas::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(180deg, rgba(5, 10, 22, 0.12) 0%, rgba(5, 10, 22, 0.48) 35%, rgba(5, 10, 22, 0.86) 100%),
+    radial-gradient(circle at 18% 28%, rgba(110, 168, 255, 0.28), transparent 45%),
+    radial-gradient(circle at 85% 22%, rgba(157, 133, 255, 0.22), transparent 45%),
+    radial-gradient(circle at 52% 62%, rgba(67, 216, 192, 0.12), transparent 52%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.landing-canvas > * {
+  position: relative;
+  z-index: 1;
+}
+
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.gradient-text {
+  background: linear-gradient(120deg, #7ab2ff 0%, #a38bff 45%, #50e3cd 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.stat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  background: rgba(110, 168, 255, 0.14);
+  color: #9fc6ff;
+  border: 1px solid rgba(110, 168, 255, 0.34);
+}
+
+.stat-pill.is-violet {
+  background: rgba(157, 133, 255, 0.14);
+  color: #c2b3ff;
+  border-color: rgba(157, 133, 255, 0.32);
+}
+
+.stat-pill.is-mint {
+  background: rgba(67, 216, 192, 0.14);
+  color: #8ff5e3;
+  border-color: rgba(67, 216, 192, 0.34);
+}
+
+.stat-pill.is-amber {
+  background: rgba(255, 203, 107, 0.14);
+  color: #ffe2a4;
+  border-color: rgba(255, 203, 107, 0.34);
 }
