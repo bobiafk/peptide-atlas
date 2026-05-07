@@ -59,6 +59,25 @@ export interface Peptide {
   faq: { q: string; a: string }[];
   relatedSlugs: string[];
   comparisonSlugs: string[];
+  providerSlugs?: string[];
+  sourceUrl: string;
+}
+
+export type ProviderType = "Physician" | "Pharmacy" | "Telehealth" | "Other";
+
+export interface Provider {
+  slug: string;
+  name: string;
+  type: ProviderType;
+  city?: string;
+  state?: string;
+  fullAddress?: string;
+  website?: string;
+  description: string;
+  verified: boolean;
+  claimed: boolean;
+  similarSlugs: string[];
+  suppliedPeptideSlugs: string[];
   sourceUrl: string;
 }
 

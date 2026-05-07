@@ -80,6 +80,7 @@ export const peptideSchema = z.object({
     .default([]),
   relatedSlugs: z.array(z.string()).default([]),
   comparisonSlugs: z.array(z.string()).default([]),
+  providerSlugs: z.array(z.string()).default([]),
   sourceUrl: z.string().url(),
 });
 
@@ -102,10 +103,35 @@ export const comparisonSchema = z.object({
   sourceUrl: z.string().url(),
 });
 
+export const providerTypeSchema = z.enum([
+  "Physician",
+  "Pharmacy",
+  "Telehealth",
+  "Other",
+]);
+
+export const providerSchema = z.object({
+  slug: z.string().min(1),
+  name: z.string().min(1),
+  type: providerTypeSchema.default("Other"),
+  city: z.string().optional(),
+  state: z.string().optional(),
+  fullAddress: z.string().optional(),
+  website: z.string().url().optional(),
+  description: z.string().default(""),
+  verified: z.boolean().default(false),
+  claimed: z.boolean().default(false),
+  similarSlugs: z.array(z.string()).default([]),
+  suppliedPeptideSlugs: z.array(z.string()).default([]),
+  sourceUrl: z.string().url(),
+});
+
 export const peptidesSchema = z.array(peptideSchema);
 export const categoriesSchema = z.array(categorySchema);
 export const comparisonsSchema = z.array(comparisonSchema);
+export const providersSchema = z.array(providerSchema);
 
 export type PeptideInput = z.infer<typeof peptideSchema>;
 export type CategoryInput = z.infer<typeof categorySchema>;
 export type ComparisonInput = z.infer<typeof comparisonSchema>;
+export type ProviderInput = z.infer<typeof providerSchema>;

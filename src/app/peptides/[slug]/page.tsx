@@ -10,7 +10,7 @@ import { Prose } from "@/components/prose";
 import { StickyTOC } from "@/components/sticky-toc";
 import { StudyCitation } from "@/components/study-citation";
 import { getCategoryStyle } from "@/lib/category-style";
-import { getPeptideBySlug, getPeptides } from "@/lib/data";
+import { getPeptideBySlug, getPeptides, getProvidersForPeptide } from "@/lib/data";
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const peptides = await getPeptides();
@@ -40,6 +40,7 @@ export default async function PeptideDetailPage({
   const peptide = await getPeptideBySlug(slug);
   const peptides = await getPeptides();
   if (!peptide) notFound();
+  const providers = await getProvidersForPeptide(peptide.slug);
 
   const related = peptides
     .filter((item) => peptide.relatedSlugs.includes(item.slug))
@@ -158,6 +159,31 @@ export default async function PeptideDetailPage({
           </div>
         </section>
 
+        <section id="providers" className="lift-card p-7">
+          <SectionHeading eyebrow="Providers" title="Where to source" />
+          {providers.length > 0 ? (
+            <div className="mt-5 grid gap-3 md:grid-cols-2">
+              {providers.slice(0, 12).map((provider) => (
+                <Link
+                  key={provider.slug}
+                  href={`/providers/${provider.slug}`}
+                  className="group flex items-center justify-between rounded-2xl border border-hairline bg-panel-muted px-4 py-3 text-sm text-text transition hover:border-accent-blue/50"
+                >
+                  <span className="line-clamp-1">
+                    {provider.name}
+                    {provider.state ? ` · ${provider.state}` : ""}
+                  </span>
+                  <ArrowUpRight className="h-3.5 w-3.5 text-muted transition group-hover:text-accent-blue" />
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <p className="mt-4 text-sm leading-relaxed text-muted">
+              No provider descriptions currently mention this peptide.
+            </p>
+          )}
+        </section>
+
         <section id="related" className="lift-card p-7">
           <SectionHeading eyebrow="Related" title="Related peptides" />
           <div className="mt-5 grid gap-3 md:grid-cols-2">
@@ -182,6 +208,7 @@ export default async function PeptideDetailPage({
           { id: "evidence", label: "Clinical Evidence" },
           { id: "fda", label: "FDA Status" },
           { id: "faq", label: "FAQ" },
+          { id: "providers", label: "Where to source" },
           { id: "related", label: "Related" },
         ]}
       />

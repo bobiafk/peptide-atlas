@@ -18,3 +18,18 @@ export interface CategorySeed {
   count: number;
   url: string;
 }
+
+export type ProviderType = "Physician" | "Pharmacy" | "Telehealth" | "Other";
+
+export interface ProviderSeed {
+  slug: string;
+  name: string;
+  type?: ProviderType;
+  city?: string;
+  state?: string;
+  website?: string;
+  shortDescription: string;
+  listingIndex: number;
+  page: number;
+  url: string;
+}

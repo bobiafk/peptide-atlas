@@ -2,7 +2,7 @@ import { cache } from "react";
 import fs from "node:fs/promises";
 import path from "node:path";
 
-import type { Category, Comparison, Peptide } from "@/lib/types";
+import type { Category, Comparison, Peptide, Provider } from "@/lib/types";
 
 const DATA_PATH = path.join(process.cwd(), "data");
 
@@ -23,6 +23,10 @@ export const getComparisons = cache(async (): Promise<Comparison[]> => {
   return readJsonFile<Comparison[]>("comparisons.json");
 });
 
+export const getProviders = cache(async (): Promise<Provider[]> => {
+  return readJsonFile<Provider[]>("providers.json");
+});
+
 export const getPeptideBySlug = cache(async (slug: string): Promise<Peptide | undefined> => {
   const peptides = await getPeptides();
   return peptides.find((peptide) => peptide.slug === slug);
@@ -39,3 +43,13 @@ export const getComparisonBySlug = cache(
     return comparisons.find((comparison) => comparison.slug === slug);
   },
 );
+
+export const getProviderBySlug = cache(async (slug: string): Promise<Provider | undefined> => {
+  const providers = await getProviders();
+  return providers.find((provider) => provider.slug === slug);
+});
+
+export const getProvidersForPeptide = cache(async (peptideSlug: string): Promise<Provider[]> => {
+  const providers = await getProviders();
+  return providers.filter((provider) => provider.suppliedPeptideSlugs.includes(peptideSlug));
+});

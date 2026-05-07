@@ -183,6 +183,7 @@ export async function parsePeptideDetail(seed: PeptideSeed): Promise<PeptideInpu
     faq,
     relatedSlugs,
     comparisonSlugs,
+    providerSlugs: [],
     sourceUrl: toAbsoluteUrl(seed.url, BASE_URL),
   };
 }

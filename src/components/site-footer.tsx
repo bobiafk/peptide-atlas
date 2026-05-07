@@ -1,4 +1,5 @@
 import { ShieldAlert } from "lucide-react";
+import Link from "next/link";
 
 export function SiteFooter(): JSX.Element {
   return (
@@ -13,9 +14,17 @@ export function SiteFooter(): JSX.Element {
             physician before using any peptide compound.
           </p>
         </div>
-        <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted">
-          © Peptide Atlas
-        </p>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/providers"
+            className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted hover:text-accent-blue"
+          >
+            Providers
+          </Link>
+          <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted">
+            © Peptide Atlas
+          </p>
+        </div>
       </div>
     </footer>
   );

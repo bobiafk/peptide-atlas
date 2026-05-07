@@ -9,15 +9,20 @@ import { parseCategoryPage } from "./parse-category";
 import { parseComparisonPage } from "./parse-compare";
 import { parsePeptideDetail } from "./parse-detail";
 import { parseListingPage } from "./parse-listing";
+import { buildProviderFromSeed } from "./parse-provider-detail";
+import { parseAllProvidersListings } from "./parse-providers-listing";
+import { enrichPeptideProviderLinks } from "./peptide-supply";
 import {
   categoriesSchema,
   comparisonsSchema,
   peptideSchema,
   peptidesSchema,
+  providersSchema,
+  providerSchema,
 } from "./schema";
 
 interface ValidationErrorEntry {
-  scope: "peptide" | "category" | "comparison";
+  scope: "peptide" | "category" | "comparison" | "provider";
   slug: string;
   issues: string[];
 }
@@ -190,13 +195,35 @@ async function run(): Promise<void> {
     comparisonResults.filter((entry): entry is NonNullable<typeof entry> => Boolean(entry)),
   );
 
-  await writeJson("peptides.json", peptides);
+  const providerSeeds = await parseAllProvidersListings();
+  console.log(`Found ${providerSeeds.length} provider listings. Building from seeds (no detail fetch)...`);
+  const providerResults = providerSeeds.map((seed) => {
+    try {
+      const parsed = buildProviderFromSeed(seed);
+      return providerSchema.parse({ ...parsed, type: seed.type ?? "Other" });
+    } catch (error) {
+      errors.push({
+        scope: "provider",
+        slug: seed.slug,
+        issues: [error instanceof Error ? error.message : "Unknown provider seed error."],
+      });
+      return null;
+    }
+  });
+  const providers = providersSchema.parse(
+    providerResults.filter((entry): entry is NonNullable<typeof entry> => Boolean(entry)),
+  );
+
+  const enriched = enrichPeptideProviderLinks(providers, peptides);
+
+  await writeJson("peptides.json", enriched.peptides);
   await writeJson("categories.json", canonicalCategories);
   await writeJson("comparisons.json", comparisons);
+  await writeJson("providers.json", enriched.providers);
   await writeJson("errors.json", errors);
 
   console.log(
-    `Done. peptides=${peptides.length}, categories=${canonicalCategories.length}, comparisons=${comparisons.length}, errors=${errors.length}`,
+    `Done. peptides=${enriched.peptides.length}, categories=${canonicalCategories.length}, comparisons=${comparisons.length}, providers=${enriched.providers.length}, errors=${errors.length}`,
   );
 }
 
